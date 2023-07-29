@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -8,11 +7,18 @@ import (
 	"fmt"
 	"os"
 
+	"portfolio-practice-backend-v2/internal/config"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+	conf    config.Config
+	pwd     string
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -50,6 +56,13 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func setPwd() {
+	var err error
+	if pwd, err = os.Getwd(); err != nil {
+		zap.S().Fatal(err)
+	}
 }
 
 // initConfig reads in config file and ENV variables if set.
